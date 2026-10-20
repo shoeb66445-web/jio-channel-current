@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { parseM3uPlaylist, toPublicChannelMetadata } from "@/lib/jiostb-playlist";
+import { parseM3uPlaylist, toFullChannels } from "@/lib/jiostb-playlist";
 
 const PLAYLIST_URL = "https://premiumplugx.top/jiostb/gdryt.php?view=raw";
 const MAX_PLAYLIST_BYTES = 2 * 1024 * 1024;
@@ -55,10 +55,15 @@ export const Route = createFileRoute("/api/jiostb")({
             return jsonError("The channel feed returned an unexpected format.", 502);
           }
 
-          const channels = toPublicChannelMetadata(parseM3uPlaylist(playlist));
+          const channels = toFullChannels(parseM3uPlaylist(playlist));
           return Response.json(
             { count: channels.length, channels },
-            { headers: { "Cache-Control": "public, max-age=60" } },
+            {
+              headers: {
+                "Cache-Control": "public, max-age=60",
+                "Access-Control-Allow-Origin": "*",
+              },
+            },
           );
         } catch {
           return jsonError("The channel feed is temporarily unavailable.", 502);
