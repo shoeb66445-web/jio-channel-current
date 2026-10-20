@@ -4,6 +4,22 @@ import { createFileRoute } from "@tanstack/react-router";
 // __root.tsx, and ships no og:image so serve-time hosting can inject the
 // project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Jio STB Feed API" },
+      {
+        name: "description",
+        content: "JSON access to the Jio STB channel feed.",
+      },
+      { property: "og:title", content: "Jio STB Feed API" },
+      {
+        property: "og:description",
+        content: "JSON access to the Jio STB channel feed.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
   component: Index,
 });
 
