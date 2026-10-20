@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+Use TanStack Start server routes for HTTP API endpoints; keep upstream sources fixed and bound response size and duration so public reads cannot become arbitrary proxies.
