@@ -15,8 +15,10 @@ export const Route = createFileRoute("/api/jiostb")({
       GET: async () => {
         try {
           const upstream = await fetch(PLAYLIST_URL, {
-            headers: { Accept: "text/plain" },
-            redirect: "error",
+            headers: {
+              Accept: "text/plain",
+              "User-Agent": "Mozilla/5.0 (compatible; JioSTBFeed/1.0)",
+            },
             signal: AbortSignal.timeout(12_000),
           });
 
