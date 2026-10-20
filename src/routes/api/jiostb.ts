@@ -56,7 +56,7 @@ export const Route = createFileRoute("/api/jiostb")({
           return new Response(playlist, {
             status: 200,
             headers: {
-              "Content-Type": "application/vnd.apple.mpegurl; charset=utf-8",
+              "Content-Type": "text/plain; charset=utf-8",
               "Content-Disposition": 'inline; filename="jiostb.m3u"',
               "Cache-Control": "public, max-age=60",
               "Access-Control-Allow-Origin": "*",
