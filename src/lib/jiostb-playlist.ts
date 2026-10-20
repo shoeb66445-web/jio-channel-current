@@ -5,6 +5,13 @@ export type PlaylistChannel = {
   url: string | null;
 };
 
+export type PublicChannelMetadata = {
+  id: string | null;
+  name: string;
+  logo: string | null;
+  category: string | null;
+};
+
 function findAttributeSeparator(value: string) {
   let insideQuotes = false;
 
@@ -68,4 +75,20 @@ export function parseM3uPlaylist(playlist: string): PlaylistChannel[] {
 
   if (current) channels.push(current);
   return channels;
+}
+
+export function toPublicChannelMetadata(
+  channels: PlaylistChannel[],
+): PublicChannelMetadata[] {
+  return channels.map(({ attributes, name }) => {
+    const logo = attributes["tvg-logo"];
+    const safeLogo = logo?.startsWith("https://") ? logo : null;
+
+    return {
+      id: attributes["tvg-id"] ?? null,
+      name: attributes["tvg-name"] ?? name,
+      logo: safeLogo,
+      category: attributes["group-title"] ?? null,
+    };
+  });
 }

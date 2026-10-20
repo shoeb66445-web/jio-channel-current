@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { parseM3uPlaylist } from "@/lib/jiostb-playlist";
+import { parseM3uPlaylist, toPublicChannelMetadata } from "@/lib/jiostb-playlist";
 
 describe("parseM3uPlaylist", () => {
   it("converts channel metadata, properties, and URLs into JSON-ready records", () => {
@@ -22,6 +22,25 @@ describe("parseM3uPlaylist", () => {
         name: "Zee TV HD",
         properties: ["#KODIPROP:inputstream.adaptive.manifest_type=mpd"],
         url: "https://example.test/live/zee.mpd",
+      },
+    ]);
+  });
+
+  it("publishes channel details without stream URLs or DRM properties", () => {
+    const channels = parseM3uPlaylist(
+      [
+        '#EXTINF:-1 tvg-id="167" tvg-name="Zee TV HD" tvg-logo="https://example.test/logo.jpg" group-title="Entertainment",Zee TV HD',
+        "#KODIPROP:inputstream.adaptive.license_key=private-value",
+        "https://example.test/live/zee.mpd?token=private-value",
+      ].join("\n"),
+    );
+
+    expect(toPublicChannelMetadata(channels)).toEqual([
+      {
+        id: "167",
+        name: "Zee TV HD",
+        logo: "https://example.test/logo.jpg",
+        category: "Entertainment",
       },
     ]);
   });
